@@ -1,0 +1,3 @@
+python ok 
+记得 --local
+3要去掉
