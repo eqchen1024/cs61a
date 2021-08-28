@@ -84,12 +84,23 @@ def make_advanced_counter_maker():
     1
     """
     "*** YOUR CODE HERE ***"
-    global_count=0
-    local_count=0
-    def make_counter(cmd):
-        local_count=0
-        if cmd=='count':
-            local_count+=1
+    #函数也是对象可以给函数添加属性从而实现变量的绑定
+    def make_counter():
+        def counter(msg):
+            if msg=='count':
+                counter.count+=1
+                return counter.count
+            elif msg=='global-count':
+                make_counter.global_count+=1
+                return make_counter.global_count
+            elif msg=='reset':
+                counter.count=0
+            elif msg=='global-reset':
+                make_counter.global_count=0
+        counter.count=0
+        return counter
+    make_counter.global_count=0
+    return make_counter
 
 # Lists
 def trade(first, second):
@@ -122,12 +133,15 @@ def trade(first, second):
     m, n = 1, 1
 
     "*** YOUR CODE HERE ***"
-
-    if False: # change this line!
-        first[:m], second[:n] = second[:n], first[:m]
-        return 'Deal!'
-    else:
-        return 'No deal!'
+    while m<=len(first) and n<len(second):
+        if sum(first[:m])<sum(second[:n]):
+            m+=1
+        elif sum(first[:m])>sum(second[:n]):
+            n+=1
+        else: # change this line!
+            first[:m], second[:n] = second[:n], first[:m]
+            return 'Deal!'
+    return 'No deal!'
 
 # Recursive objects
 def make_to_string(front, mid, back, empty_repr):
@@ -146,6 +160,13 @@ def make_to_string(front, mid, back, empty_repr):
     '()'
     """
     "*** YOUR CODE HERE ***"
+    def gen(lst):
+        if lst is Link.empty:
+            return empty_repr
+        else:
+            return front+str(lst.first)+mid+gen(lst.rest)+back
+    return gen
+
 
 def tree_map(fn, t):
     """Maps the function fn over the entries of t and returns the
@@ -170,6 +191,14 @@ def tree_map(fn, t):
         256
     """
     "*** YOUR CODE HERE ***"
+    cur=t
+    cur.label=fn(cur.label)
+    if cur.branches==[]:
+        return
+    for i in cur.branches:
+        tree_map(fn,i)
+    return t
+
 
 def long_paths(tree, n):
     """Return a list of all paths in tree with length at least n.
@@ -201,6 +230,18 @@ def long_paths(tree, n):
     [Link(0, Link(11, Link(12, Link(13, Link(14)))))]
     """
     "*** YOUR CODE HERE ***"
+    paths=[]
+    if n<=0 and tree.is_leaf():
+        paths.append(Link(tree.label))
+    else:
+        for i in tree.branches:
+            for j in long_paths(i,n-1):
+                paths.append(Link(tree.label,j))
+    return paths
+
+
+
+
 
 # Orders of Growth
 def zap(n):
