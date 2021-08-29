@@ -3,12 +3,13 @@
 
 ; Q5
 (define lst
-  'YOUR-CODE-HERE
+  (list (list 1) 2 '(3 . 4) 5)
 )
 
 ; Q6
 (define (composed f g)
   'YOUR-CODE-HERE
+  (lambda (num) (f (g num))) #即使只有一个参数也要写括号
 )
 
 ; Q7
