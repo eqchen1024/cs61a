@@ -9,12 +9,13 @@
 ; Q6
 (define (composed f g)
   'YOUR-CODE-HERE
-  (lambda (num) (f (g num))) #即使只有一个参数也要写括号
+  (lambda (num) (f (g num)))
 )
 
 ; Q7
 (define (remove item lst)
   'YOUR-CODE-HERE
+  (filter (lambda (x) (not(= x item))) lst)
 )
 
 
@@ -30,8 +31,13 @@
 (define (max a b) (if (> a b) a b))
 (define (min a b) (if (> a b) b a))
 (define (gcd a b)
-  'YOUR-CODE-HERE
+  (cond
+      ((zero? (min a b)) (max a b))
+      ((zero? (remainder (max a b) (min a b))) (min a b))
+      (else (gcd (min a b) (remainder (max a b) (min a b))))
+  )
 )
+
 
 ;;; Tests
 (gcd 24 60)
@@ -42,6 +48,8 @@
 ; Q9
 (define (no-repeats s)
   'YOUR-CODE-HERE
+  (defne occurred ())
+  (filter (lambda (x occurred) ()))
 )
 
 ; Q10

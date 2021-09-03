@@ -2,3 +2,5 @@
 'filter-correct', (512, 70)
 'make-list-correct', (1024, 70)
 'composed-correct', (1536, 70)
+'remove-correct', (2048, 70)
+'gcd-correct', (2560, 70)
