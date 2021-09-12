@@ -48,16 +48,26 @@
 ; Q9
 (define (no-repeats s)
   'YOUR-CODE-HERE
-  (defne occurred ())
-  (filter (lambda (x occurred) ()))
+  (if (null? s)
+  s
+  (cons (car s) (no-repeats(filter (lambda (x) (not(= x (car s)))) (cdr s))))
+  )
 )
 
 ; Q10
 (define (substitute s old new)
-  'YOUR-CODE-HERE
+  (cond ((null? s) s)
+      ((pair? (car s)) (cons (substitute (car s) old new) (substitute (cdr s) old new)))
+      ((eq? (car s) old) (cons new (substitute (cdr s) old new)))
+      (else (cons (car s) (substitute (cdr s) old new )))
+
+  )
 )
 
 ; Q11
 (define (sub-all s olds news)
   'YOUR-CODE-HERE
+  (if (null? olds) s
+      (sub-all (substitute s (car olds) (car news)) (cdr olds) (cdr news))
+  )
 )
