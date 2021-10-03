@@ -32,6 +32,11 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
     else:
         # BEGIN PROBLEM 5
         "*** YOUR CODE HERE ***"
+        check_procedure(env.lookup(first))
+        operator=env.lookup(first)
+        operands=rest.map(lambda x: scheme_eval(x,env))
+        return scheme_apply(operator,operands,env)
+
         # END PROBLEM 5
 
 def self_evaluating(expr):
@@ -77,14 +82,24 @@ class Frame:
         """Define Scheme SYMBOL to have VALUE."""
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
+        self.bindings[symbol]=value
         # END PROBLEM 3
 
     def lookup(self, symbol):
         """Return the value bound to SYMBOL. Errors if SYMBOL is not found."""
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
+        if self.parent !=None:
+            try:
+                return self.bindings[symbol]
+            except:
+                return self.parent.lookup(symbol)
+        else:
+            try:
+                return self.bindings[symbol]
         # END PROBLEM 3
-        raise SchemeError('unknown identifier: {0}'.format(symbol))
+            except:
+                raise SchemeError('unknown identifier: {0}'.format(symbol))
 
     def make_child_frame(self, formals, vals):
         """Return a new local frame whose parent is SELF, in which the symbols
@@ -142,6 +157,12 @@ class PrimitiveProcedure(Procedure):
             args = args.second
         # BEGIN PROBLEM 4
         "*** YOUR CODE HERE ***"
+        if self.use_env is True:
+            python_args.append(self.use_env)
+        try:
+            return self.fn(*python_args)
+        except:
+            raise SchemeError('num of args is not right.')
         # END PROBLEM 4
 
 class LambdaProcedure(Procedure):
