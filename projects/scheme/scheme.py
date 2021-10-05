@@ -158,7 +158,7 @@ class PrimitiveProcedure(Procedure):
         # BEGIN PROBLEM 4
         "*** YOUR CODE HERE ***"
         if self.use_env is True:
-            python_args.append(self.use_env)
+            python_args.append(env)
         try:
             return self.fn(*python_args)
         except:
@@ -222,6 +222,9 @@ def do_define_form(expressions, env):
         check_form(expressions, 2, 2)
         # BEGIN PROBLEM 6
         "*** YOUR CODE HERE ***"
+        val=scheme_eval(expressions.second.first,env)
+        env.define(target,val)
+        return target
         # END PROBLEM 6
     elif isinstance(target, Pair) and scheme_symbolp(target.first):
         # BEGIN PROBLEM 10
