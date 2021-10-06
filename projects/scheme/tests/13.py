@@ -7,11 +7,7 @@ test = {
         {
           'code': r"""
           scm> (and)
-          c65729b823194bffbccc4a162f8653bd
-          # locked
-          # choice: #t
-          # choice: #f
-          # choice: SchemeError
+          #t
           scm> (and 1 False)
           da859b61586947ca44e824712fd6fca4
           # locked

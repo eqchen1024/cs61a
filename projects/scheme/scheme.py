@@ -57,7 +57,12 @@ def eval_all(expressions, env):
     """Evaluate each expression im the Scheme list EXPRESSIONS in
     environment ENV and return the value of the last."""
     # BEGIN PROBLEM 8
-    return scheme_eval(expressions.first, env)
+    res=expressions.map(lambda x: scheme_eval(x,env))
+    if res==nil:
+        return None
+    while res.second != nil:
+        res=res.second
+    return res.first
     # END PROBLEM 8
 
 ################
@@ -115,6 +120,19 @@ class Frame:
         child = Frame(self) # Create a new child with self as the parent
         # BEGIN PROBLEM 11
         "*** YOUR CODE HERE ***"
+        child.bindings=self.bindings.copy()# because bindings are reference type we need use copy to create a new bindings for child,Otherwise it will change parnet's bindings
+        def helper(args):
+            python_args = []
+            while args is not nil:
+                python_args.append(args.first)
+                args = args.second
+            return python_args
+        k,v=helper(formals),helper(vals)
+        len_k,len_v=len(k),len(v)
+        if len_k !=len_v:
+            raise SchemeError('mismatch num of args')
+        for i in range(len_k):
+            child.define(k[i],v[i])
         # END PROBLEM 11
         return child
 
@@ -181,6 +199,7 @@ class LambdaProcedure(Procedure):
         of values, for a lexically-scoped call evaluated in environment ENV."""
         # BEGIN PROBLEM 12
         "*** YOUR CODE HERE ***"
+        return self.env.make_child_frame(self.formals, args)
         # END PROBLEM 12
 
     def __str__(self):
@@ -229,6 +248,12 @@ def do_define_form(expressions, env):
     elif isinstance(target, Pair) and scheme_symbolp(target.first):
         # BEGIN PROBLEM 10
         "*** YOUR CODE HERE ***"
+        var=target.first
+        parm=target.second
+        body=expressions.second
+        expressions=Pair(parm,body)
+        env.define(var,do_lambda_form(expressions, env))
+        return var
         # END PROBLEM 10
     else:
         bad_target = target.first if isinstance(target, Pair) else target
@@ -239,6 +264,7 @@ def do_quote_form(expressions, env):
     check_form(expressions, 1, 1)
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    return expressions.first
     # END PROBLEM 7
 
 def do_begin_form(expressions, env):
@@ -253,6 +279,7 @@ def do_lambda_form(expressions, env):
     check_formals(formals)
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    return LambdaProcedure(formals,expressions.second,env)
     # END PROBLEM 9
 
 def do_if_form(expressions, env):
