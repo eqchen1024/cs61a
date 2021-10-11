@@ -333,6 +333,10 @@ def do_cond_form(expressions, env):
         if scheme_truep(test):
             # BEGIN PROBLEM 14
             "*** YOUR CODE HERE ***"
+            if clause.second is nil:
+                return test
+            else:
+                return eval_all(clause.second,env)
             # END PROBLEM 14
         expressions = expressions.second
 
@@ -351,7 +355,24 @@ def make_let_frame(bindings, env):
         raise SchemeError('bad bindings list in let form')
     # BEGIN PROBLEM 15
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 15
+    formals=[]
+    vals=[]
+    while bindings is not nil:
+        def_exp=bindings.first
+        check_form(def_exp,2,2)
+        formals.append(def_exp.first)
+        vals.append(eval_all(def_exp.second,env))
+        bindings=bindings.second
+    def make_pair(lst):
+        if lst==[]:
+            return nil
+        else:
+            return Pair(lst[0],make_pair(lst[1:]))
+    formals_pair=make_pair(formals)
+    check_formals(formals_pair)
+    vals_pair=make_pair(vals)
+    return env.make_child_frame(formals_pair,vals_pair)
+    #END PROBLEM 15
 
 def do_define_macro(expressions, env):
     """Evaluate a define-macro form."""
@@ -439,6 +460,8 @@ class MuProcedure(Procedure):
 
     # BEGIN PROBLEM 16
     "*** YOUR CODE HERE ***"
+    def make_call_frame(self, args, env):
+        return env.make_child_frame(self.formals, args)
     # END PROBLEM 16
 
     def __str__(self):
@@ -455,6 +478,7 @@ def do_mu_form(expressions, env):
     check_formals(formals)
     # BEGIN PROBLEM 16
     "*** YOUR CODE HERE ***"
+    return MuProcedure(formals,expressions.second)
     # END PROBLEM 16
 
 SPECIAL_FORMS['mu'] = do_mu_form
