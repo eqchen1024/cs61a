@@ -1,0 +1,4 @@
+'scale-correct', (0, 70)
+'trap-correct', (512, 70)
+'hailstone-correct', (1024, 70)
+'repeated-correct', (1536, 70)
