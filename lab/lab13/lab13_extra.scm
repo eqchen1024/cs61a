@@ -61,16 +61,40 @@
 ; Implementing and using these helper procedures is optional. You are allowed
 ; to delete them.
 (define (unique s)
-  'YOUR-CODE-HERE
-  nil
+  (define (in-a-list? a res)
+    (cond
+      ((null? res) #f)
+      ((eq? a (car res)) #t)
+      (else (in-a-list? a (cdr res)))
+    )
+  )
+  (define (pick-unique res s)
+    (cond
+      ((null? s) res)
+      ((in-a-list? (car s) res) (pick-unique res (cdr s)))
+      (else (pick-unique (append res (cons (car s) nil)) (cdr s)))
+    )
+  )
+  (pick-unique () s)
 )
 
 (define (count name s)
-  'YOUR-CODE-HERE
-  nil
+  (define (helper name s cnt)
+    (cond
+      ((null? s) cnt)
+      ((eq? name (car s)) (helper name (cdr s) (+ cnt 1)))
+      (else (helper name (cdr s) cnt))
+    )
+  )
+  (helper name s 0)
 )
 
 (define (tally names)
-  'YOUR-CODE-HERE
-  nil
+  (define unique-dict (unique names))
+  (define (helper names unique-dict)
+    (if (null? unique-dict) nil
+      (cons (cons (car unique-dict) (count (car unique-dict) names)) (helper names (cdr unique-dict)))
+    )
+  )
+  (helper names unique-dict)
 )
