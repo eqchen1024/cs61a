@@ -23,13 +23,26 @@
 
 ; Q5
 (define (insert n s)
-  'YOUR-CODE-HERE
+  (define (helper n s res)
+    (cond
+      ((null? s) (append res (cons n nil)))
+      ((<= n (car s)) (append (append res (cons n nil)) s))
+      (else (helper n (cdr s) (append res (cons (car s) nil))))
+    )
+  )
+  (if (< n (car s))
+    (append (cons n nil) s)
+    (helper n (cdr s) (cons (car s) nil))
+  )
 )
 
 ; Q6
 (define (deep-map fn s)
-  'YOUR-CODE-HERE
-  nil
+  (cond
+    ((null? s) nil)
+    ((list? (car s)) (cons (deep-map fn (car s)) (deep-map fn (cdr s))))
+    (else (cons (fn (car s)) (deep-map fn (cdr s))))
+  )
 )
 
 ; Q7

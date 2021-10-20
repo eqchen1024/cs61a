@@ -2,3 +2,5 @@
 'tail replicate-correct', (512, 70)
 'permutations-correct', (1024, 70)
 'rle-correct', (1536, 70)
+'insert-correct', (2048, 70)
+'deep-map-correct', (2560, 70)
