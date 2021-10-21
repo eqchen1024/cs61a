@@ -40,3 +40,7 @@ def make_generators_generator(g):
     5
     """
     "*** YOUR CODE HERE ***"
+    res=[]
+    for i in g():
+        res.append(i)
+        yield iter(res)
